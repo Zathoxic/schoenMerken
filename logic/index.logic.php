@@ -1,16 +1,46 @@
 <?php
     require('connect.php');
 
-    $query = "SELECT * FROM brands";
+    //Shoe BRANDS
+    $getBrands = "SELECT * FROM brands";
+    $shoeResults = $conn->query($getBrands);
+    $shoeBrands = $shoeResults->fetch_all(MYSQLI_ASSOC);
 
-    $resultBrands = $conn->query($query);
+    foreach ($shoeBrands as $shoeBrand) {
+        $shoeBrandID = $conn->escape_string($shoeBrand['id']);
+        
+        $query = "SELECT stock FROM sizes WHERE brand_id= $shoeBrandID";
+        $runQuery = $conn->query($query);
+        $stockResult = $runQuery->fetch_assoc();
 
-	$shoeMerken = $resultBrands->fetch_all(MYSQLI_ASSOC);
+        var_dump($stockResult);     
+  
+    }
+
+    //Shoe SIZES
+    $getSizes = "SELECT * from sizes";
+    $shoeResults = $conn->query($getSizes);
+    $shoeSizes = $shoeResults->fetch_all(MYSQLI_ASSOC);
 
 
+    //Stock
 
-    $sql = "SELECT * FROM sizes";
+    $stockExists = "";
+    $stockDoesntExist = "";
 
-    $resultSizes = $conn->query($sql);
+    $query = "SELECT stock FROM sizes WHERE id=$shoeBrandID";
+    $runQuery = $conn->query($query);
+    $stockResult = $runQuery->fetch_assoc();
 
-    $shoeSizes = $resultSizes->fetch_all(MYSQLI_ASSOC);
+    //echo("result: " . $stockResult);     
+
+    $update = mysqli_query($conn,"UPDATE sizes SET stock='$stock' WHERE id=$shoeBrandID");             
+    if (!$update){
+    echo("Error description: " . mysqli_error($conn));
+    }
+
+    if(!$stockDoesntExist){
+        $conn->query($update);
+    }else{
+        
+    }

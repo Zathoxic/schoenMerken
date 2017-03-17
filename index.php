@@ -7,30 +7,42 @@
             <tr>
                 <th>Id:</th>
                 <th>Brand:</th>
-                <th>Size:</th>
+                <th>Sizes:</th>
+                <th>Stock:</th>
             </tr>
-            <?php foreach ($shoeMerken as $shoeMerk) { ?>
+            <?php
+            foreach ($shoeBrands as $shoeBrand) {
+            ?>
             <tr>
                 <td>
-                    <?= $shoeMerk['id'] ?>
+                    <?= $shoeBrand['id'] ?>
                 </td>
                 <td>
-                    <?= $shoeMerk['brand'] ?>
+                    <?= $shoeBrand['brand'] ?>
                 </td>
                 <td>
                     <select class="shoeSizes" name="shoeSize">
-                        <?php foreach ($shoeSizes as $shoeSize){ ?>
-                        <option value="">
-                            <?= $shoeSize['size'] ?>
-                        </option>
-                        <?php } ?>
+                        <?php
+                            foreach ($shoeSizes as $shoeSize) {
+                                if($shoeSize['brand_id'] == $shoeBrand['id']){
+                            ?>
+                            <option value=""><?=$shoeSize['size']?></option>
+                            <?php
+                                }
+                            }
+                        ?>
                     </select>
+                </td>
+                <td>
+                    <?php 
+                        var_dump($shoeBrand['id']);
+                        var_dump($stock);
+                    ?>
                 </td>
             </tr>
             <?php } ?>
         </table>
     </div>
-
 <?php
     include('common/footer.php');
 ?>
